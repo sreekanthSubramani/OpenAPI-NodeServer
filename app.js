@@ -5,11 +5,12 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import { db } from './Database/db.js'
 import { Usermodel } from "./Models/Usermodel.js";
+import createUserRoute from "./UserDBApi/CreateUserRoute.js";
 
 const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({extended : false}))
-
+app.use(createUserRoute)
 
 const PORT = 1999
 

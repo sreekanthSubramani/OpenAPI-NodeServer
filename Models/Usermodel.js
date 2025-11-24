@@ -19,7 +19,8 @@ export const Usermodel = db.define('User',{
     },
     username : {
         type : DataTypes.STRING,
-        allowNull : false
+        allowNull : false,
+        unique : true
     },
     password : {
         type : DataTypes.STRING,
@@ -27,5 +28,5 @@ export const Usermodel = db.define('User',{
     }
 },{
     tableName : "Users",
-    paranoid : true
+    paranoid : true,
 })
