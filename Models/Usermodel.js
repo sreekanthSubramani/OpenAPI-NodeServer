@@ -1,11 +1,11 @@
 import { db } from "../Database/db.js";
 import { DataTypes } from "sequelize";
-import {v4} from 'uuid'
+
 
 export const Usermodel = db.define('User',{
     userid:{
         type : DataTypes.STRING,
-        values : v4(),
+        defaultValue : DataTypes.UUIDV4,
         primaryKey : true,
         allowNull : false
     },
