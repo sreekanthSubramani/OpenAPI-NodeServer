@@ -25,6 +25,10 @@ export const Usermodel = db.define('User',{
     password : {
         type : DataTypes.STRING,
         allowNull : false
+    },
+    refreshKey : {
+        type : DataTypes.STRING,
+        allowNull : true
     }
 },{
     tableName : "Users",

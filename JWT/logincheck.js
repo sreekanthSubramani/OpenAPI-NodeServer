@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { Usermodel } from '../Models/Usermodel.js'
 import express from 'express'
 import bcrypt from 'bcrypt'
+import { where } from 'sequelize'
 
 
 const userCheck = express.Router()
@@ -15,11 +16,24 @@ const userCheck = express.Router()
             if(verifyValidUser){
                 const comparor = bcrypt.compare(verifyValidUser.dataValues.password, password)
                 if(comparor){
-                    const token = jwt.sign({username : username}, process.env.JWT_Token, {
-                        expiresIn : '9h'
+                    const accessToken = jwt.sign({username : username}, process.env.JWT_Token, {
+                        expiresIn : '1m'
                     })
-                    console.log(token)
-                    res.json({token})
+
+                    const refreshToken = jwt.sign({username : username}, process.env.JWT_Token,{
+                        expiresIn : '60d'
+                    })
+
+                    
+                    await Usermodel.update(
+                        {refreshKey : refreshToken},
+                        {where : {username}}
+                    )
+
+
+                    res.json({access : accessToken, refresh : refreshToken})
+                    
+
                 }else{
                     console.log('Nope not true !!')
                 }
@@ -31,8 +45,6 @@ const userCheck = express.Router()
         }catch(e){
             console.log(e)
         }
-
-
 
     })
 

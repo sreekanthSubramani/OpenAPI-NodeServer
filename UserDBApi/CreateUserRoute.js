@@ -19,7 +19,6 @@ createUserRoute.post('/createUser', async (req, res)=>{
                 password : hashedPassword,
                 username : username
         }})
-        console.log(user, 'USER USER USER')
         if(created){
             console.log(created)
             return res.status(201).json({msg : "User Created"})
