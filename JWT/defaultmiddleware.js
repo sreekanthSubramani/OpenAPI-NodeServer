@@ -1,21 +1,25 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
-export const jwtmiddleware = (req, res, next)=>{
+const jwtmiddleware = (req, res, next) => {
+  const headers = req.headers.authorization;
+
+  const token = headers.split(" ")[1];
+
+  try{
+      if (!token) {
+         return res.status(401).json({ message: "Auth header missing" });
+      }
+
+   let decode = jwt.verify(token, process.env.JWT_Token)
     
-    const headers = req.headers.authorization
+   req.user = decode;
+  next();
 
-    if(!headers){
-        return res.status(400).json({msg : "Auth Header Missing"})
+  }catch(e){
+    if(e.name === "TokenExpiredError"){
+        return res.status(401).json({ message: "Access token expired", err : e });
     }
+  }
+};
 
-    const token = headers.split(" ")[1]
-
-    try{
-        const userToken = jwt.verify(token, process.env.JWT_Token)
-        req.user = userToken 
-        next()
-    }catch(e){
-        console.log(e)
-    }
-    
-}
+export default jwtmiddleware;

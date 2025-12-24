@@ -1,13 +1,12 @@
 import { db } from "../Database/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, DATE, UUID } from "sequelize";
 
 
 export const Usermodel = db.define('User',{
     userid:{
-        type : DataTypes.STRING,
-        defaultValue : DataTypes.UUIDV4,
-        primaryKey : true,
-        allowNull : false
+        type : DataTypes.UUID,
+        allowNull : false,
+        primaryKey : true
     },
     name : {
         type : DataTypes.STRING,
@@ -27,6 +26,10 @@ export const Usermodel = db.define('User',{
         allowNull : false
     },
     refreshKey : {
+        type : DataTypes.STRING,
+        allowNull : true
+    },
+    profileLink : {
         type : DataTypes.STRING,
         allowNull : true
     }

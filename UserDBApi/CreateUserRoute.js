@@ -7,20 +7,21 @@ const createUserRoute = express.Router()
 
 
 createUserRoute.post('/createUser', async (req, res)=>{
-    const {name, dob, username, password} = req.body
+    const {name, dob, username, password, profileLink} = req.body
 
+
+    console.log(req.body, 'req body')
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try{
-        const [user, created] = await Usermodel.findOrCreate({where : {username},
-        defaults : {
-                name : name,
-                dob : dob,
-                password : hashedPassword,
-                username : username
-        }})
-        if(created){
-            console.log(created)
+        const user = await Usermodel.create({
+            name : name,
+            dob : dob,
+            username : username,
+            password : hashedPassword,
+            profileLink : profileLink
+        })
+        if(user){
             return res.status(201).json({msg : "User Created"})
         }else{
             console.log('already exists !!')
